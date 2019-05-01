@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  flask:
+    build: .
+    volumes: 
+      - .:/root/analytics
+    environment:
+      - FLASK_APP=/root/analytics/run.py
+      - VIRTUAL_HOST=analytics.local
+    command: >
+      sh -c '
+        virtualenv flask-env
+        source flask-env/bin/activate
+        uwsgi /root/analytics/app.ini
+        supervisord
+      '
+    ports:
+      - 5000:5000
+    container_name: talentu_analytics_flask
