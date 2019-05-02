@@ -1,0 +1,6 @@
+2019-05-02 22:26:17,740 CRIT Supervisor running as root (no user in config file)
+2019-05-02 22:26:17,745 INFO supervisord started with pid 1
+2019-05-02 22:26:18,749 INFO spawned: 'nginx' with pid 8
+2019-05-02 22:26:18,755 INFO spawned: 'uwsgi' with pid 9
+2019-05-02 22:26:20,108 INFO success: nginx entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2019-05-02 22:26:20,108 INFO success: uwsgi entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)

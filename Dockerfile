@@ -1,11 +1,27 @@
-FROM ubuntu:latest
+FROM python:3.5
 
-RUN apt-get update -y
-RUN apt-get install -y python-pip python-virtualenv python-dev build-essential supervisor
+RUN apt-get update
+RUN apt-get install -y --no-install-recommends \
+        libatlas-base-dev gfortran nginx supervisor
 
-COPY . /root/analytics
-WORKDIR /root/analytics/
-COPY Docker/conf/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-RUN pip install -r /root/analytics/requirements.txt
+RUN pip3 install uwsgi
 
-EXPOSE 5000
+COPY ./requirements.txt /project/requirements.txt
+
+RUN pip3 install -r /project/requirements.txt
+
+RUN useradd --no-create-home nginx
+
+RUN rm /etc/nginx/sites-enabled/default
+RUN rm -r /root/.cache
+
+COPY Docker/nginx/nginx.conf /etc/nginx/
+COPY Docker/nginx/site.conf /etc/nginx/conf.d/
+COPY uwsgi.ini /etc/uwsgi/
+COPY supervisord.conf /etc/
+
+COPY /app /project
+
+WORKDIR /project
+
+CMD ["/usr/bin/supervisord"]
